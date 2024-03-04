@@ -1,4 +1,4 @@
-<!-- templates/index.html -->
+<!-- templates/search.html -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -83,11 +83,11 @@
       </tbody>
     </table>
     {% if page > 1 %}
-    <a href="{{ url_for('index', page=page-1) }}">이전</a>
+    <a href="{{ url_for('search', keyword=keyword, page=page-1) }}">이전</a>
     {% endif %}
     <span>현재 페이지: {{ page }}</span>
     {% if titles|length == 10 %}
-    <a href="{{ url_for('index', page=page+1) }}">다음</a>
+    <a href="{{ url_for('search', keyword=keyword, page=page+1) }}">다음</a>
     {% endif %}
   </body>
 </html>

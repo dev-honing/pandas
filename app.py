@@ -61,8 +61,8 @@ def search():
     # 제목 검색
     titles = search_titles(keyword, page, per_page)
 
-    # 검색 결과를 index.html로 전달하여 렌더링
-    return render_template('index.html', titles=titles, page=page)
+    # 검색 결과를 search.html로 전달하여 렌더링
+    return render_template('search.html', titles=titles, page=page, keyword=keyword)
 
 # 메인 페이지 라우트
 @app.route('/')
