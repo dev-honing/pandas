@@ -5,55 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Netflix Lists</title>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      table {
-        width: 100%;
-        border: #000 3px double;
-        border-collapse: collapse;
-        table-layout: fixed;
-      }
-      th,
-      td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-      }
-      th {
-        background-color: #f2f2f2;
-        font-size: small;
-        white-space: nowrap;
-      }
-      td {
-        font-size: x-small;
-        height: 35px;
-        overflow: scroll;
-        white-space: nowrap;
-      }
-      .toHome {
-        font-size: xx-large;
-        font-weight: bolder;
-        color: #000;
-        text-decoration: none;
-        display: flex;
-        justify-content: center;
-        margin-top: 2rem;
-      }
-      .searchBar {
-        display: flex;
-        justify-content: end;
-        margin: 5px;
-      }
-      .pageNation {
-        display: flex;
-        justify-content: space-between;
-        margin: 5px;
-      }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   </head>
   <body>
     <a class="toHome" href="/">넷플릭스 목록</a>
