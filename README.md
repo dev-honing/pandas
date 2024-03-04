@@ -11,7 +11,7 @@ PowerShell이 아닌 Command Prompt로 VS Code 터미널 실행
 ### 4. pandas 설치
 `pip install pandas`
 ### 5. python 파일 생성
-main.py에 작성하고, DB 연결 설정과 쿼리문으로 작성했다.
+main.py에 작성하고, DB 연결 설정과 쿼리문 로직을 작성했다.
 ```
 DB: netflix
 TABLE: netflix_titles
