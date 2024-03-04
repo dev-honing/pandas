@@ -28,11 +28,12 @@ def create_mysql_table(cursor):
         # 테이블 생성 SQL 쿼리
         create_table_query = """
             CREATE TABLE IF NOT EXISTS netflix_titles (
-                연번 INT AUTO_INCREMENT PRIMARY KEY,
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                연번 VARCHAR(255),
                 분류 VARCHAR(255),
                 제목 VARCHAR(255),
                 감독 VARCHAR(255),
-                출연진 VARCHAR(255),
+                출연진 VARCHAR(1000),
                 방영국가 VARCHAR(255),
                 추가날짜 VARCHAR(255),
                 개봉연도 INT,
@@ -65,6 +66,9 @@ def insert_data_to_mysql(dataframe):
         # 테이블 생성
         create_mysql_table(cursor)
 
+        # NaN 값을 NULL로 변환
+        dataframe = dataframe.where(pd.notnull(dataframe), None)
+
         # 데이터 삽입
         for index, row in dataframe.iterrows():
             sql = "INSERT INTO netflix_titles (연번, 분류, 제목, 감독, 출연진, 방영국가, 추가날짜, 개봉연도, 연령제한, 상영시간, 부연설명) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
@@ -91,4 +95,4 @@ if __name__ == '__main__':
     if translated_data is not None:
         # MySQL 데이터 삽입
         insert_data_to_mysql(translated_data)
-        
+        print(translated_data)
