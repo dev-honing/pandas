@@ -1,16 +1,84 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflix Titles</title>
+    <title>Netflix Lists</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      table {
+          width: 100%;
+          border: #000 3px double;
+          border-collapse: collapse;
+          table-layout: fixed;
+      }
+      th, td {
+          padding: 8px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+      }
+      th {
+          background-color: #f2f2f2;
+          font-size: small;
+          white-space: nowrap;
+      }
+      td {
+        font-size: x-small;
+        height: 35px;
+        overflow: scroll;
+        white-space: nowrap;
+      }
+    </style>
 </head>
 <body>
-    <h1>Netflix Titles</h1>
-    <ul>
-        {% for title in titles %}
-            <li>{{ title[0] }}</li>
-        {% endfor %}
-    </ul>
+  <a href="/">홈으로</a>
+  <form action=""></form>
+    <h1>넷플릭스 목록</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>연번</th>
+                <th>분류</th>
+                <th>제목</th>
+                <th>감독</th>
+                <th>출연진</th>
+                <th>방영국가</th>
+                <th>추가날짜</th>
+                <th>개봉연도</th>
+                <th>연령제한</th>
+                <th>상영시간</th>
+                <th>부연설명</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for title in titles[:10] %}
+                <tr>
+                    <td>{{ title['연번'] }}</td>
+                    <td>{{ title['분류'] }}</td>
+                    <td>{{ title['제목'] }}</td>
+                    <td>{{ title['감독'] }}</td>
+                    <td>{{ title['출연진'] }}</td>
+                    <td>{{ title['방영국가'] }}</td>
+                    <td>{{ title['추가날짜'] }}</td>
+                    <td>{{ title['개봉연도'] }}</td>
+                    <td>{{ title['연령제한'] }}</td>
+                    <td>{{ title['상영시간'] }}</td>
+                    <td>{{ title['부연설명'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if page > 1 %}
+        <a href="{{ url_for('index', page=page-1) }}">이전</a>
+    {% endif %}
+    <span>현재 페이지: {{ page }}</span>
+    {% if titles|length == 10 %}
+        <a href="{{ url_for('index', page=page+1) }}">다음</a>
+    {% endif %}
 </body>
 </html>
