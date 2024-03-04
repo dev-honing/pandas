@@ -51,7 +51,7 @@ def get_titles(page, per_page):
 # 데이터베이스에서 제목을 검색하는 함수
 def search_titles(keyword, page, per_page):
     # 페이지와 페이지당 아이템 수를 기반으로 오프셋 계산
-    offset = (page - 1) * per_page
+    offset = (page - 1) * per_page 
 
     # 데이터베이스에서 제목을 검색하는 쿼리문 실행
     query = "SELECT * FROM netflix_titles WHERE 제목 LIKE %s LIMIT %s OFFSET %s"
@@ -60,18 +60,48 @@ def search_titles(keyword, page, per_page):
 
     return titles
 
+# 데이터베이스에서 감독을 검색하는 함수
+def search_directors(keyword, page, per_page):
+    offset = (page - 1) * per_page
+
+    # 데이터베이스에서 감독을 검색하는 쿼리문 실행
+    query = "SELECT * FROM netflix_titles WHERE 감독 LIKE %s LIMIT %s OFFSET %s"
+    params = ('%' + keyword + '%', per_page, offset)
+    directors = execute_query(query, params)
+
+    return directors
+
+# 데이터베이스에서 출연진을 검색하는 함수
+def search_casts(keyword, page, per_page):
+    offset = (page - 1) * per_page
+
+    # 데이터베이스에서 출연진을 검색하는 쿼리문 실행
+    query = "SELECT * FROM netflix_titles WHERE 출연진 LIKE %s LIMIT %s OFFSET %s"
+    params = ('%' + keyword + '%', per_page, offset)
+    cast = execute_query(query, params)
+
+    return cast
+
 # 검색 결과를 보여주는 라우트
 @app.route('/search')
 def search():
     keyword = request.args.get('keyword')  # 검색어
+    category = request.args.get('category')  # 검색 카테고리
     page = int(request.args.get('page', 1))  # 페이지
     per_page = 10  # 페이지당 아이템 수
 
-    # 제목 검색
-    titles = search_titles(keyword, page, per_page)
+    if category == '감독':
+        # 감독으로 검색
+        results = search_directors(keyword, page, per_page)
+    elif category == '출연진':
+        # 출연진으로 검색
+        results = search_casts(keyword, page, per_page)
+    else:
+        # 제목으로 검색
+        results = search_titles(keyword, page, per_page)
 
     # 검색 결과를 search.html로 전달하여 렌더링
-    return render_template('search.html', titles=titles, page=page, keyword=keyword)
+    return render_template('search.html', titles=results, page=page, keyword=keyword, category=category)
 
 # 메인 페이지 라우트
 @app.route('/')
