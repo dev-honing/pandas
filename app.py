@@ -4,50 +4,59 @@ import mysql.connector
 
 app = Flask(__name__)
 
-# 데이터베이스에서 제목 목록을 가져오는 함수
-def get_titles(page, per_page):
-    # 데이터베이스 연결 설정
-    connection = mysql.connector.connect(
+# 데이터베이스 연결 함수
+def connect_to_database():
+    return mysql.connector.connect(
         host="localhost",
         user="root",
         password="1234",
         database="netflix"
     )
+
+# 쿼리 실행 함수
+def execute_query(query, params=None, fetch_all=True):
+    connection = connect_to_database()
     cursor = connection.cursor(dictionary=True)
 
+    # 쿼리 실행
+    if params:
+        cursor.execute(query, params)
+    else:
+        cursor.execute(query)
+
+    # 결과 가져오기
+    if fetch_all:
+        result = cursor.fetchall()
+    else:
+        result = cursor.fetchone()
+
+    # 커서와 연결 및 닫기
+    cursor.close()
+    connection.close()
+
+    return result
+
+# 데이터베이스에서 제목 목록을 가져오는 함수
+def get_titles(page, per_page):
     # 페이지와 페이지당 아이템 수를 기반으로 오프셋 계산
     offset = (page - 1) * per_page
 
     # 데이터베이스에서 제목 목록을 가져오는 쿼리문 실행
-    cursor.execute("SELECT * FROM netflix_titles LIMIT %s OFFSET %s", (per_page, offset))
-    titles = cursor.fetchall()
-
-    # 연결 및 커서 닫기
-    cursor.close()
-    connection.close()
+    query = "SELECT * FROM netflix_titles LIMIT %s OFFSET %s"
+    params = (per_page, offset)
+    titles = execute_query(query, params)
 
     return titles
 
 # 데이터베이스에서 제목을 검색하는 함수
 def search_titles(keyword, page, per_page):
-    connection = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="1234",
-        database="netflix"
-    )
-    cursor = connection.cursor(dictionary=True)
-
     # 페이지와 페이지당 아이템 수를 기반으로 오프셋 계산
     offset = (page - 1) * per_page
 
     # 데이터베이스에서 제목을 검색하는 쿼리문 실행
-    cursor.execute("SELECT * FROM netflix_titles WHERE 제목 LIKE %s LIMIT %s OFFSET %s", ('%' + keyword + '%', per_page, offset))
-    titles = cursor.fetchall()
-
-    # 연결 및 커서 닫기
-    cursor.close()
-    connection.close()
+    query = "SELECT * FROM netflix_titles WHERE 제목 LIKE %s LIMIT %s OFFSET %s"
+    params = ('%' + keyword + '%', per_page, offset)
+    titles = execute_query(query, params)
 
     return titles
 
