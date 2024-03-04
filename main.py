@@ -1,3 +1,5 @@
+# main.py
+import os
 import pandas as pd
 
 def translate_and_classify_data(csv_file_path):
@@ -18,3 +20,12 @@ def translate_and_classify_data(csv_file_path):
         'duration': '상영시간',
         'description': '부연설명'
     })
+    
+    return translated_data
+
+if __name__ == '__main__':
+    # CSV 파일 경로
+    csv_file_path = os.path.join(os.path.dirname(__file__), 'netflix_titles.csv')
+    
+    # 데이터프레임 출력
+    print(translate_and_classify_data(csv_file_path))
