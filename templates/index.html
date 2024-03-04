@@ -37,7 +37,18 @@
 </head>
 <body>
   <a href="/">홈으로</a>
-  <form action=""></form>
+  <form action="{{ url_for('search') }}" method="GET">
+    <select name="category">
+        <option value="제목">제목</option>
+        <option value="감독">감독</option>
+        <option value="출연진">출연진</option>
+        <option value="방영국가">방영국가</option>
+        <option value="개봉연도">개봉연도</option>
+        <option value="연령제한">연령제한</option>
+    </select>
+    <input type="text" name="keyword" placeholder="검색어를 입력하세요">
+    <button type="submit">검색</button>
+</form>
     <h1>넷플릭스 목록</h1>
     <table>
         <thead>
